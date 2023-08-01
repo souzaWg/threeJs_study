@@ -24,15 +24,20 @@ var init = function() {
 
 var render = function() {
     requestAnimationFrame( render );
+    
+    this.createLight();
+
+    this.createPlane();    
 
     this.animateCube();
+
 
     renderer.render( scene, camera );
 };
 
 var createACube = function() {
     var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-    var material = new THREE.MeshBasicMaterial( { color: "green" } );
+    var material = new THREE.MeshLambertMaterial( { color: "green" } );
     cube = new THREE.Mesh( geometry, material );
     cube.position.x = 0;
     cube.position.y = 0;
@@ -40,10 +45,28 @@ var createACube = function() {
     scene.add( cube );
 };
 
-var animateCube = function() {
-    cube.rotation.x += 0.1;
-    cube.rotation.y += 0.1;
-    cube.position.z -= 0.1;
+var createPlane = function() {
+    var planeGeometry = new THREE.PlaneGeometry(20, 20);
+    var planeMaterial = new THREE.MeshLambertMaterial({ color: 0xcccccc});
+    plane = new THREE.Mesh(planeGeometry, planeMaterial);
+
+    plane.rotation.x = -0.5 * Math.PI;
+    plane.position.y = -1;
+
+    scene.add(plane);
 };
+
+var animateCube = function() {
+    cube.rotation.x += 0.0;
+    cube.rotation.y += 0.01;
+    // cube.position.z -= 0.01;
+};
+
+var createLight = function() {
+    var spotLight = new THREE.SpotLight(0xffffff);
+    spotLight.position.set(5, 10, 5);
+    spotLight.castShadow = true;
+    scene.add(spotLight);
+}
 
 window.onload = this.init;
